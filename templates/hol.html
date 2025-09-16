@@ -1,0 +1,215 @@
+{% extends "navbar.html" %}
+
+{% block top %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goldkrube - Hall of Loosers</title>
+    <meta name="description" content="Here lies the bullied, antisocial & doxed rejects who stepped into the wrong side of the internet.">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:url" content="{{ url_for('hall_of_loosers') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Doxbin - Hall of Autism">
+    <meta property="og:description" content="Here lies the bullied, antisocial & doxed rejects who stepped into the wrong side of the internet.">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='legacy/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='files/dropdown.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='files/doxbin.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+        html { overflow-x: hidden; }
+        input[type=text], select, option {
+            line-height: 1.2;
+            color: white;
+            background: #282828;
+            border: 0;
+            border-radius: 2px;
+            padding: 7px 5px;
+            width: 200px;
+            font-size: 100%;
+        }
+        input[type=text]::placeholder { color: rgb(167, 167, 167); }
+        input[type=submit] {
+            line-height: 1.2;
+            color: white;
+            background: #282828;
+            border: 0;
+            border-radius: 2px;
+            padding: 7px 5px;
+        }
+        input[type=submit]:hover { background: #3d3d3d; }
+        .center { text-align: center; }
+        .admin-text { color: red; font-weight: bold; }
+        .doxbin-text { text-align: center; line-height: 15px; color: white; border: none; }
+        .hoa-title { margin: 5px 0 0 0; letter-spacing: 2px; }
+        .hoa-container {
+            border: 1px solid rgb(40, 40, 40);
+            background-color: rgb(14, 14, 14);
+            width: 32%;
+            border-radius: 2px;
+            float: left;
+            margin: 10px 5px;
+            padding: 15px;
+            box-shadow: 0px 0px 5px rgba(0,0,0,0.75);
+            height: 460px;
+            transition: background-color 0.2s, border 0.2s;
+        }
+        .hoa-container:hover { background-color: rgb(18, 18, 18); border-color: rgb(44,44,44); }
+        .hoa-image { text-align: center; max-height: 215px; border-bottom: 1px solid rgb(40,40,40); }
+        .hoa-image img { width: 100%; height: 200px; max-width: 200px; max-height: 200px; margin-bottom: 15px; }
+        .hoa-name { text-align: center; font-size: 20px; font-weight: bold; padding-top: 10px; color: white; }
+        .hoa-description { margin-top: 5px; text-align: center; color: rgb(200,200,200); overflow-y: auto; height: 160px; word-wrap: break-word; }
+
+        /* Responsive */
+        @media only screen and (max-width: 991px) { .hoa-container { width: 48%; } }
+        @media only screen and (max-width: 575px) { .hoa-container { width: 100%; } }
+        @media only screen and (max-width: 271px) {
+            .doxbin-text { font-size: 9px; line-height: 10px; }
+            .hoa-title { font-size: 16px; }
+        }
+
+        /* Rainbow animation */
+        .rainbow { text-shadow: 2px 2px 4px #000; animation: rainbow 5s infinite; }
+        @keyframes rainbow {
+            0% { color:red; } 17% { color:orange; } 33% { color:yellow; } 50% { color:green; } 
+            67% { color:blue; } 84% { color:purple; } 100% { color:red; }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar { width: 7px; }
+        ::-webkit-scrollbar-track { background: #cacaca; }
+        ::-webkit-scrollbar-thumb { background: #6e6e6e; }
+        ::-webkit-scrollbar-thumb:hover { background: #444; }
+    </style>
+
+    <!-- Sparkle script -->
+    <script>
+        var sparkles = 900;
+        var x = ox = 400, y = oy = 300;
+        var swide = 800, shigh = 600, sleft = sdown = 0;
+        var tiny = [], star = [], starv = [], starx = [], stary = [], tinyx = [], tinyy = [], tinyv = [];
+        var colour = "random";
+
+        window.onload = function() {
+            if(document.getElementById){
+                for(var i=0; i<sparkles; i++){
+                    var divTiny = createDiv(3,3);
+                    divTiny.style.visibility = "hidden";
+                    divTiny.style.zIndex = 999;
+                    document.body.appendChild(tiny[i]=divTiny);
+                    starv[i]=tinyv[i]=0;
+
+                    var divStar = createDiv(5,5);
+                    divStar.style.backgroundColor = "transparent";
+                    divStar.style.visibility = "hidden";
+                    divStar.style.zIndex = 999;
+                    var rlef = createDiv(1,5);
+                    var rdow = createDiv(5,1);
+                    rlef.style.top="2px"; rlef.style.left="0px";
+                    rdow.style.top="0px"; rdow.style.left="2px";
+                    divStar.appendChild(rlef); divStar.appendChild(rdow);
+                    document.body.appendChild(star[i]=divStar);
+                }
+                set_width();
+                sparkle();
+            }
+        };
+
+        function sparkle(){
+            if(Math.abs(x-ox)>1 || Math.abs(y-oy)>1){ ox=x; oy=y;
+                for(var c=0;c<sparkles;c++) if(!starv[c]){
+                    star[c].style.left = (starx[c]=x) + "px";
+                    star[c].style.top = (stary[c]=y+1) + "px";
+                    star[c].style.clip = "rect(0px,5px,5px,0px)";
+                    star[c].childNodes[0].style.backgroundColor = star[c].childNodes[1].style.backgroundColor = (colour=="random")? newColour() : colour;
+                    star[c].style.visibility="visible"; starv[c]=50; break;
+                }
+            }
+            for(var c=0;c<sparkles;c++){
+                if(starv[c]) update_star(c);
+                if(tinyv[c]) update_tiny(c);
+            }
+            setTimeout(sparkle, 40);
+        }
+
+        function update_star(i){
+            if(--starv[i]==25) star[i].style.clip="rect(1px,4px,4px,1px)";
+            if(starv[i]){
+                stary[i]+=1+Math.random()*3;
+                starx[i]+=(i%5-2)/5;
+                if(stary[i]<shigh+sdown){ star[i].style.top=stary[i]+"px"; star[i].style.left=starx[i]+"px"; }
+                else{ star[i].style.visibility="hidden"; starv[i]=0; return; }
+            } else {
+                tinyv[i]=50;
+                tiny[i].style.top=(tinyy[i]=stary[i])+"px";
+                tiny[i].style.left=(tinyx[i]=starx[i])+"px";
+                tiny[i].style.width=tiny[i].style.height="2px";
+                tiny[i].style.backgroundColor = star[i].childNodes[0].style.backgroundColor;
+                star[i].style.visibility="hidden"; tiny[i].style.visibility="visible";
+            }
+        }
+
+        function update_tiny(i){
+            if(--tinyv[i]==25){ tiny[i].style.width=tiny[i].style.height="1px"; }
+            if(tinyv[i]){
+                tinyy[i]+=1+Math.random()*3;
+                tinyx[i]+=(i%5-2)/5;
+                if(tinyy[i]<shigh+sdown){ tiny[i].style.top=tinyy[i]+"px"; tiny[i].style.left=tinyx[i]+"px"; }
+                else{ tiny[i].style.visibility="hidden"; tinyv[i]=0; }
+            } else tiny[i].style.visibility="hidden";
+        }
+
+        document.onmousemove = function(e){ x = e.pageX; y = e.pageY; };
+        window.onscroll = function(){ sdown=window.pageYOffset || document.documentElement.scrollTop; sleft=window.pageXOffset || document.documentElement.scrollLeft; };
+        window.onresize = set_width;
+
+        function set_width(){
+            swide = window.innerWidth || document.documentElement.clientWidth || 800;
+            shigh = window.innerHeight || document.documentElement.clientHeight || 600;
+        }
+
+        function createDiv(h,w){ var d=document.createElement("div"); d.style.position="absolute"; d.style.height=h+"px"; d.style.width=w+"px"; d.style.overflow="hidden"; return d; }
+        function newColour(){ var c=[255, Math.floor(Math.random()*256), Math.floor(Math.random()*(256-127))]; c.sort(()=>0.5-Math.random()); return "rgb("+c[0]+","+c[1]+","+c[2]+")"; }
+    </script>
+</head>
+<body>
+    <!-- Hidden autoplay audio -->
+    <iframe src="{{ url_for('static', filename='files/hoa/audio.mp3') }}" 
+        allow="autoplay" 
+        style="display:none">
+</iframe>
+{% endblock %}
+
+{% block bottom %}
+<div class="col-md-12" style="margin-top:60px;">
+    <div class="center">
+        <pre class="doxbin-text">
+        </pre>
+        <h4 class="hoa-title rainbow"><b>HALL OF LOOSERS</b></h4>
+    </div>
+
+    <div class="container" style="margin-top:20px;">
+        {% for looser in loosers_list %}
+        <div class="hoa-container">
+            <div class="hoa-image">
+                <img src="{{ looser.image }}">
+            </div>
+            <div class="hoa-name rainbow">{{ looser.topic }}</div>
+            <div class="hoa-description">
+                <b>{{ looser.subtopic }}</b><br>
+                {% for line in looser.body %}
+                    {{ line }}<br>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>
+{% endblock %}
